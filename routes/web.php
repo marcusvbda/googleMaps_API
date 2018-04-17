@@ -1,6 +1,7 @@
 <?php
 
-Route::post('/', 'mapsController@index')->name("googlemaps");
-Route::get('/auth', 'AuthController@getToken')->name("token");
+
+$router->post('/', 'mapsController@index');
+$router->get('/auth', 'AuthController@getToken');
 
 

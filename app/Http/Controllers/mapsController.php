@@ -5,11 +5,6 @@ use App\Http\Controllers\Controller;
 
 class mapsController extends Controller
 {
-    public function __construct()
-    {
-        // 
-    }
-
     public function index()
     {  
         try
@@ -25,13 +20,14 @@ class mapsController extends Controller
             $endereco = $_POST['logradouro'].", ".$_POST['numero'].", ".$_POST['cidade'].", ".$_POST['estado'];
             $Address = urlencode($endereco);
 
-            
-            $request_url = "https://maps.googleapis.com/maps/api/geocode/xml?key=AIzaSyCBTV2y691b6xVdoyhcJz-mh-Cc6N7O7UE&address=".$Address;
+            $request_url = "https://maps.googleapis.com/maps/api/geocode/xml?key="
+                .env("googleMapsToken")."&address=".$Address;
             $xml = simplexml_load_file($request_url);
             $status = $xml->status;
             if ($status=="OK") {
                 $Lat = $xml->result->geometry->location->lat;
                 $Lon = $xml->result->geometry->location->lng;
+
                 return view('maps',compact('Lat','Lon'));
             }
         }
