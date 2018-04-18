@@ -1,14 +1,14 @@
 <?php
 
-
-$router->post('/', 'mapsController@index');
-$router->get('/auth', 'AuthController@getToken');
-$router->get('/test',function()
+$router->group(['prefix' => 'api'], function($router)
 {
-	return response()->json([
-		"statusCode" => 200,
-		"message" => "successfully tested"
-	],200);
+    $router->post('/', 'mapsController@index');
+	$router->get('/auth', 'AuthController@getToken');
+	$router->get('/test',function()
+	{
+		return response()->json([
+			"statusCode" => 200,
+			"message" => "successfully tested"
+		],200);
+	});
 });
-
-

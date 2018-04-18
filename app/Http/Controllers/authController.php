@@ -21,7 +21,7 @@ class authController extends Controller
 				],401);
 
 	    	$user = $user[0];
-	    	$user->token = uniqid();
+	    	$user->token = md5(uniqid());
 	    	$user->validate = date("Y-m-d");
 	    	$user->save();
 	    	return response()->json([
