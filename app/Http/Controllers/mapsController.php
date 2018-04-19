@@ -10,7 +10,6 @@ class mapsController extends Controller
         try
         {
             $token = $_POST['_token'];
-
             if(!authController::checkToken($token))
                 return response()->json([
                     "statusCode" => 401,
@@ -22,7 +21,17 @@ class mapsController extends Controller
 
             $request_url = "https://maps.googleapis.com/maps/api/geocode/xml?key="
                 .env("googleMapsToken")."&address=".$Address;
-            $xml = simplexml_load_file($request_url);
+
+            $arrContextOptions=array(
+                "ssl"=>array(
+                    "verify_peer"=>false,
+                    "verify_peer_name"=>false,
+                ),
+            );  
+
+            $content = file_get_contents($request_url, false, stream_context_create($arrContextOptions));
+            $xml = simplexml_load_string($content);
+
             $status = $xml->status;
             if ($status=="OK") {
                 $Lat = $xml->result->geometry->location->lat;
