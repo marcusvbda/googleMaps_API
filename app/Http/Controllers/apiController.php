@@ -3,19 +3,21 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class mapsController extends Controller
+class apiController extends Controller
 {
     public function index()
     {  
         try
         {
-            $token = $_POST['_token'];
+            $token = "";
+            if(isset($_GET['_token']))
+               $token =  $_GET['_token'];
             if(!authController::checkToken($token))
                 return response()->json([
                     "statusCode" => 401,
                     "message" => "invalid token"
                 ],401);
-
+                
             $endereco = $_POST['logradouro'].", ".$_POST['numero'].", ".$_POST['cidade'].", ".$_POST['estado'];
             $Address = urlencode($endereco);
 

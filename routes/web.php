@@ -2,7 +2,7 @@
 
 $router->group(['prefix' => 'api'], function($router)
 {
-    $router->post('/', 'mapsController@index');
+    $router->post('/', 'apiController@index');
 	$router->get('/auth', 'AuthController@getToken');
 	$router->get('/test',function()
 	{
