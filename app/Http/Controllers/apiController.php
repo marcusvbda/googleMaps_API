@@ -10,8 +10,8 @@ class apiController extends Controller
         try
         {
             $token = "";
-            if(isset($_GET['_token']))
-               $token =  $_GET['_token'];
+            if(isset($_POST['_token']))
+               $token =  $_POST['_token'];
             if(!authController::checkToken($token))
                 return response()->json([
                     "statusCode" => 401,
