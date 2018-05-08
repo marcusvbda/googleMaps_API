@@ -27,8 +27,14 @@ class apiController extends Controller
 
                 
             $cep = $_POST['cep'];
-            $content = file_get_contents("https://viacep.com.br/ws/{$cep}/json/", false, stream_context_create($arrContextOptions));
-            return response(json_decode($content, true),202);
+            if(!$content = @file_get_contents("https://viacep.com.br/ws/{$cep}/json/"))
+                return response()->json([
+                    "statusCode" => 505,
+                    "message" => "invalid cep"
+                ],401);
+
+            $json = json_decode($content, true);
+            return response($json,202);
         }
         catch(\Exception $e)
         {
