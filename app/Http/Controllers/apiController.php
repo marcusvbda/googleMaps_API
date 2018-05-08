@@ -17,12 +17,6 @@ class apiController extends Controller
                     "statusCode" => 401,
                     "message" => "invalid token"
                 ],401);
-                
-            $endereco = $_POST['logradouro'].", ".$_POST['numero'].", ".$_POST['cidade'].", ".$_POST['estado'];
-            $Address = urlencode($endereco);
-
-            $request_url = "https://maps.googleapis.com/maps/api/geocode/xml?key="
-                .env("googleMapsToken")."&address=".$Address;
 
             $arrContextOptions=array(
                 "ssl"=>array(
@@ -31,16 +25,10 @@ class apiController extends Controller
                 ),
             );  
 
-            $content = file_get_contents($request_url, false, stream_context_create($arrContextOptions));
-            $xml = simplexml_load_string($content);
-
-            $status = $xml->status;
-            if ($status=="OK") {
-                $Lat = $xml->result->geometry->location->lat;
-                $Lon = $xml->result->geometry->location->lng;
-
-                return view('maps',compact('Lat','Lon'));
-            }
+                
+            $cep = $_POST['cep'];
+            $content = file_get_contents("https://viacep.com.br/ws/{$cep}/json/", false, stream_context_create($arrContextOptions));
+            return response(json_decode($content, true),202);
         }
         catch(\Exception $e)
         {
